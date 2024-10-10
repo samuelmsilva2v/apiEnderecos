@@ -11,7 +11,7 @@ import com.example.demo.infrastructure.factories.ConnectionFactory;
 public class EnderecoRepositoryImpl implements EnderecoRepository {
 
 	@Override
-	public void inserir(Endereco endereco) {
+	public void insert(Endereco endereco) {
 
 		try {
 
@@ -39,7 +39,7 @@ public class EnderecoRepositoryImpl implements EnderecoRepository {
 	}
 
 	@Override
-	public void atualizar(UUID id, Endereco endereco) {
+	public void update(UUID id, Endereco endereco) {
 
 		try {
 
@@ -59,7 +59,7 @@ public class EnderecoRepositoryImpl implements EnderecoRepository {
 			statement.execute();
 
 			connection.close();
-			
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -67,7 +67,7 @@ public class EnderecoRepositoryImpl implements EnderecoRepository {
 	}
 
 	@Override
-	public void deletar(UUID id) {
+	public void delete(UUID id) {
 
 		try {
 
@@ -77,7 +77,7 @@ public class EnderecoRepositoryImpl implements EnderecoRepository {
 			var statement = connection.prepareStatement("DELETE FROM endereco WHERE id=?");
 			statement.setString(1, id.toString());
 			statement.execute();
-			
+
 			connection.close();
 
 		} catch (Exception e) {
@@ -87,20 +87,20 @@ public class EnderecoRepositoryImpl implements EnderecoRepository {
 	}
 
 	@Override
-	public List<Endereco> consultar() {
-		
+	public List<Endereco> findAll() {
+
 		try {
-			
+
 			var connectionFactory = new ConnectionFactory();
 			var connection = connectionFactory.getConnection();
-			
+
 			var statement = connection.prepareStatement("SELECT * FROM endereco");
 			var resultSet = statement.executeQuery();
-			
+
 			var enderecos = new ArrayList<Endereco>();
-			
-			while(resultSet.next()) {
-				
+
+			while (resultSet.next()) {
+
 				var endereco = new Endereco();
 				endereco.setId(UUID.fromString(resultSet.getString("id")));
 				endereco.setLogradouro(resultSet.getString("logradouro"));
@@ -110,14 +110,14 @@ public class EnderecoRepositoryImpl implements EnderecoRepository {
 				endereco.setCidade(resultSet.getString("cidade"));
 				endereco.setUf(resultSet.getString("uf"));
 				endereco.setCep(resultSet.getString("cep"));
-				
+
 				enderecos.add(endereco);
 			}
-			
+
 			connection.close();
-			
+
 			return enderecos;
-			
+
 		} catch (Exception e) {
 			e.printStackTrace();
 			return null;
@@ -126,23 +126,23 @@ public class EnderecoRepositoryImpl implements EnderecoRepository {
 	}
 
 	@Override
-	public Endereco consultarPorId(UUID id) {
+	public Endereco findById(UUID id) {
 
 		try {
-			
+
 			var connectionFactory = new ConnectionFactory();
 			var connection = connectionFactory.getConnection();
-			
+
 			var statement = connection.prepareStatement("SELECT * FROM endereco WHERE id=?");
 			statement.setString(1, id.toString());
 			var resultSet = statement.executeQuery();
-			
+
 			Endereco endereco = null;
-			
-			if(resultSet.next()) {
-				
+
+			if (resultSet.next()) {
+
 				endereco = new Endereco();
-				
+
 				endereco.setId(UUID.fromString(resultSet.getString("id")));
 				endereco.setLogradouro(resultSet.getString("logradouro"));
 				endereco.setNumero(resultSet.getString("numero"));
@@ -151,13 +151,13 @@ public class EnderecoRepositoryImpl implements EnderecoRepository {
 				endereco.setCidade(resultSet.getString("cidade"));
 				endereco.setUf(resultSet.getString("uf"));
 				endereco.setCep(resultSet.getString("cep"));
-				
+
 			}
-			
+
 			connection.close();
-			
+
 			return endereco;
-			
+
 		} catch (Exception e) {
 			e.printStackTrace();
 			return null;

@@ -7,13 +7,13 @@ import com.example.demo.domain.models.entities.Endereco;
 
 public interface EnderecoRepository {
 
-	void inserir(Endereco endereco);
+	void insert(Endereco endereco);
 	
-	void atualizar(UUID id, Endereco endereco);
+	void update(UUID id, Endereco endereco);
 	
-	void deletar(UUID id);
+	void delete(UUID id);
 	
-	List<Endereco> consultar();
+	List<Endereco> findAll();
 	
-	Endereco consultarPorId(UUID id);
+	Endereco findById(UUID id);
 }
