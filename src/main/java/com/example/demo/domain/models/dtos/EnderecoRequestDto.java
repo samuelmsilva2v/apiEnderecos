@@ -1,13 +1,29 @@
 package com.example.demo.domain.models.dtos;
 
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.Pattern;
+
 public class EnderecoRequestDto {
 
+	@NotEmpty(message = "O logradouro é obrigatório.")
 	private String logradouro;
+	
+	@NotEmpty(message = "O número é obrigatório.")
 	private String numero;
+	
 	private String complemento;
+	
+	@NotEmpty(message = "O bairro é obrigatório.")
 	private String bairro;
+	
+	@NotEmpty(message = "A cidade é obrigatória.")
 	private String cidade;
+	
+	@NotEmpty(message = "A UF é obrigatória.")
 	private String uf;
+	
+	@NotEmpty(message = "O CEP é obrigatório.")
+	@Pattern(regexp = "^\\d{5}-\\d{3}$", message = "CEP inválido. O formato deve ser #####-###.")
 	private String cep;
 
 	public String getLogradouro() {
