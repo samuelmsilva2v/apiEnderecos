@@ -13,41 +13,85 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.domain.models.dtos.EnderecoRequestDto;
-import com.example.demo.domain.models.dtos.EnderecoResponseDto;
 import com.example.demo.domain.models.entities.Endereco;
+import com.example.demo.domain.services.impl.EnderecoRepositoryImpl;
 
 @RestController
 @RequestMapping("api/enderecos")
 public class EnderecoController {
 
 	@PostMapping
-	public EnderecoResponseDto post(@RequestBody EnderecoRequestDto dto) {
-		// TODO
-		return null;
+	public String post(@RequestBody EnderecoRequestDto dto) {
+
+		var endereco = new Endereco();
+
+		endereco.setId(UUID.randomUUID());
+		endereco.setLogradouro(dto.getLogradouro());
+		endereco.setNumero(dto.getNumero());
+		endereco.setComplemento(dto.getComplemento());
+		endereco.setBairro(dto.getBairro());
+		endereco.setCidade(dto.getCidade());
+		endereco.setUf(dto.getUf());
+		endereco.setCep(dto.getCep());
+
+		var repository = new EnderecoRepositoryImpl();
+		repository.insert(endereco);
+
+		return "Endereço cadastrado com sucesso!";
 	}
-	
+
 	@PutMapping("{id}")
-	public EnderecoResponseDto put(@PathVariable UUID id, @RequestBody EnderecoRequestDto dto) {
-		// TODO
-		return null;
+	public String put(@PathVariable UUID id, @RequestBody EnderecoRequestDto dto) {
+
+		var repository = new EnderecoRepositoryImpl();
+
+		var endereco = repository.findById(id);
+
+		if (endereco == null)
+			return "Endereço não encontrado, verifique o ID informado.";
+
+		endereco.setLogradouro(dto.getLogradouro());
+		endereco.setNumero(dto.getNumero());
+		endereco.setComplemento(dto.getComplemento());
+		endereco.setBairro(dto.getBairro());
+		endereco.setCidade(dto.getCidade());
+		endereco.setUf(dto.getUf());
+		endereco.setCep(dto.getCep());
+
+		repository.update(id, endereco);
+
+		return "Endereço atualizado com sucesso!";
 	}
-	
+
 	@DeleteMapping("{id}")
 	public String delete(@PathVariable UUID id) {
-		// TODO
-		return null;
+
+		var repository = new EnderecoRepositoryImpl();
+
+		var endereco = repository.findById(id);
+
+		if (endereco == null)
+			return "Endereço não encontrado, verifique o ID informado.";
+		
+		repository.delete(id);
+
+		return "Endereço excluído com sucesso!";
 	}
-	
+
 	@GetMapping
 	public List<Endereco> getAll() {
-		// TODO
-		return null;
+		
+		var repository = new EnderecoRepositoryImpl();
+		
+		return repository.findAll();
 	}
-	
+
 	@GetMapping("{id}")
-	public Endereco getById() {
-		// TODO
-		return null;
+	public Endereco getById(@PathVariable UUID id) {
+		
+		var repository = new EnderecoRepositoryImpl();
+		
+		return repository.findById(id);
 	}
-	
+
 }
