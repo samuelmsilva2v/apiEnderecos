@@ -1,26 +1,84 @@
-# Getting Started
+# API Endereços
+API RESTful desenvolvida em Spring Boot que fornece um CRUD para gerenciamento de endereços.
 
-### Reference Documentation
-For further reference, please consider the following sections:
+## Tecnologias utilizadas:
+- Java 21
+- Spring Boot
+- Maven
+- MySQL
+- Swagger
+- Bean Validation
 
-* [Official Apache Maven documentation](https://maven.apache.org/guides/index.html)
-* [Spring Boot Maven Plugin Reference Guide](https://docs.spring.io/spring-boot/3.3.4/maven-plugin)
-* [Create an OCI image](https://docs.spring.io/spring-boot/3.3.4/maven-plugin/build-image.html)
-* [Spring Boot DevTools](https://docs.spring.io/spring-boot/docs/3.3.4/reference/htmlsingle/index.html#using.devtools)
-* [Spring Web](https://docs.spring.io/spring-boot/docs/3.3.4/reference/htmlsingle/index.html#web)
+## Endpoints:
+| Método | Endpoint             | Descrição                     |
+|--------|-----------------------|------------------------------|
+| POST   | `/api/enderecos`      | Cadastra um novo endereço    |
+| GET    | `/api/enderecos`      | Consulta todos os endereços  |
+| GET    | `/api/enderecos/{id}` | Consulta um endereço por ID  |
+| PUT    | `/api/enderecos/{id}` | Atualiza um endereço         |
+| DELETE | `/api/enderecos/{id}` | Remove um endereço           |
 
-### Guides
-The following guides illustrate how to use some features concretely:
+## Estrutura do projeto:
+```plaintext
+com.example.demo
+├── application
+│   └── controllers         # Controladores REST
+├── domain
+│   ├── models              # Entidades e objetos de domínio
+│   │   ├── dtos
+│   │   └── entities
+│   └── services            # Lógicas de domínio
+│       ├── impl            
+│       └── interfaces      
+├── infrastructure          # Camada de infraestrutura 
+│   ├── configurations      
+│   ├── factories
+│   └── configurations      
+└── ApiEnderecosApplication.java
+```
 
-* [Accessing data with MySQL](https://spring.io/guides/gs/accessing-data-mysql/)
-* [Building a RESTful Web Service](https://spring.io/guides/gs/rest-service/)
-* [Serving Web Content with Spring MVC](https://spring.io/guides/gs/serving-web-content/)
-* [Building REST services with Spring](https://spring.io/guides/tutorials/rest/)
+## Instalação e execução:
 
-### Maven Parent overrides
+#### Requisitos:
+- Java 17 ou superior
+- Spring Boot 3.3.5
+- MySQL
 
-Due to Maven's design, elements are inherited from the parent POM to the project POM.
-While most of the inheritance is fine, it also inherits unwanted elements like `<license>` and `<developers>` from the parent.
-To prevent this, the project POM contains empty overrides for these elements.
-If you manually switch to a different parent and actually want the inheritance, you need to remove those overrides.
+#### 1. Criação do banco de dados MySQL
 
+```sql
+CREATE DATABASE bd_apiEnderecos;
+
+USE bd_apiEnderecos;
+
+CREATE TABLE endereco (
+    id CHAR(36) PRIMARY KEY NOT NULL, -- UUID será armazenado como CHAR(36)
+    logradouro VARCHAR(255) NOT NULL,
+    numero VARCHAR(20) NOT NULL,
+    complemento VARCHAR(255),
+    bairro VARCHAR(100) NOT NULL,
+    cidade VARCHAR(100) NOT NULL,
+    uf CHAR(2) NOT NULL, -- UF é um campo de 2 caracteres (ex: SP, RJ)
+    cep VARCHAR(10) NOT NULL, -- CEP formatado como string para permitir hífen
+    PRIMARY KEY (id)
+);
+```
+
+#### 2. Clone o repositório:
+```bash
+   git clone https://github.com/samuelmsilva2v/apiEnderecos.git
+   cd apiEnderecos
+```
+
+#### 3. Instalando as dependências e compilando o projeto com Maven:
+```bash
+./mvnw clean install
+```
+
+#### 4. Executando a aplicação:
+```bash
+./mvnw spring-boot:run
+```
+
+#### 5. Acesse a documentação da API:
+  - Documentação da API: http://localhost:8080/swagger-ui/index.html
