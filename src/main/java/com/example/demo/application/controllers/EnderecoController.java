@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.domain.models.dtos.EnderecoRequestDto;
+import com.example.demo.domain.models.dtos.EnderecoResponseDto;
 import com.example.demo.domain.models.entities.Endereco;
 import com.example.demo.domain.services.impl.EnderecoRepositoryImpl;
 
@@ -21,7 +22,7 @@ import com.example.demo.domain.services.impl.EnderecoRepositoryImpl;
 public class EnderecoController {
 
 	@PostMapping
-	public String post(@RequestBody EnderecoRequestDto dto) {
+	public EnderecoResponseDto post(@RequestBody EnderecoRequestDto dto) {
 
 		var endereco = new Endereco();
 
@@ -36,8 +37,18 @@ public class EnderecoController {
 
 		var repository = new EnderecoRepositoryImpl();
 		repository.insert(endereco);
+		
+		var response = new EnderecoResponseDto();
+		response.setId(endereco.getId());
+		response.setLogradouro(endereco.getLogradouro());
+		response.setNumero(endereco.getNumero());
+		response.setComplemento(endereco.getComplemento());
+		response.setBairro(endereco.getBairro());
+		response.setCidade(endereco.getCidade());
+		response.setUf(endereco.getUf());
+		response.setCep(endereco.getCep());
 
-		return "Endereço cadastrado com sucesso!";
+		return response;
 	}
 
 	@PutMapping("{id}")
