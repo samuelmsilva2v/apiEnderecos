@@ -8,6 +8,7 @@ API RESTful desenvolvida em Spring Boot que fornece um CRUD para gerenciamento d
 - MySQL
 - Swagger
 - Bean Validation
+- JUnit (testes unitários)
 
 ## Endpoints:
 | Método | Endpoint             | Descrição                     |
@@ -69,16 +70,20 @@ CREATE TABLE endereco (
    git clone https://github.com/samuelmsilva2v/apiEnderecos.git
    cd apiEnderecos
 ```
+#### 3. Execute os testes:
+```bash
+./mvnw test
+```
 
-#### 3. Instalando as dependências e compilando o projeto com Maven:
+#### 4. Instalando as dependências e compilando o projeto com Maven:
 ```bash
 ./mvnw clean install
 ```
 
-#### 4. Executando a aplicação:
+#### 5. Executando a aplicação:
 ```bash
 ./mvnw spring-boot:run
 ```
 
-#### 5. Acesse a documentação da API:
+#### 6. Acesse a documentação da API:
   - Documentação da API: http://localhost:8080/swagger-ui/index.html
