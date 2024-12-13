@@ -2,7 +2,9 @@ package com.example.demo;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.nio.charset.StandardCharsets;
@@ -30,37 +32,34 @@ class ApiEnderecosApplicationTests {
 
 	@Autowired
 	private MockMvc mockMvc;
-	
+
 	@Autowired
 	private ObjectMapper objectMapper;
-	
-	private static UUID id; 
-	
+
+	private static UUID id;
+
 	@Test
 	@Order(1)
 	void cadastrarEnderecoTest() throws Exception {
-		
+
 		var faker = new Faker(Locale.forLanguageTag("pt-BR"));
-		
+
 		var request = new EnderecoRequestDto();
 		request.setLogradouro(faker.address().streetName());
 		request.setNumero(faker.address().buildingNumber());
 		request.setComplemento(faker.address().secondaryAddress());
 		request.setBairro(faker.address().lastName());
 		request.setCidade(faker.address().city());
-		request.setUf("SP");
-		request.setCep(faker.number().digits(5)+ "-" + faker.number().digits(3));
-		
-		var result = mockMvc.perform(post("/api/enderecos")
-				.contentType("application/json")
-				.content(objectMapper.writeValueAsString(request)))
-				.andExpect(status().isOk())
-				.andReturn();
-		
+		request.setUf("ES");
+		request.setCep(faker.number().digits(5) + "-" + faker.number().digits(3));
+
+		var result = mockMvc.perform(post("/api/enderecos").contentType("application/json")
+				.content(objectMapper.writeValueAsString(request))).andExpect(status().isOk()).andReturn();
+
 		var content = result.getResponse().getContentAsString(StandardCharsets.UTF_8);
-		
+
 		var response = objectMapper.readValue(content, EnderecoResponseDto.class);
-		
+
 		assertNotNull(response.getId());
 		assertEquals(response.getLogradouro(), request.getLogradouro());
 		assertEquals(response.getNumero(), request.getNumero());
@@ -69,8 +68,31 @@ class ApiEnderecosApplicationTests {
 		assertEquals(response.getCidade(), request.getCidade());
 		assertEquals(response.getUf(), request.getUf());
 		assertEquals(response.getCep(), request.getCep());
-		
+
 		id = response.getId();
+	}
+
+	@Test
+	@Order(2)
+	void atualizarEnderecoTest() throws Exception {
+
+		var faker = new Faker(Locale.forLanguageTag("pt-BR"));
+
+		var request = new EnderecoRequestDto();
+		request.setLogradouro(faker.address().streetName());
+		request.setNumero(faker.address().buildingNumber());
+		request.setComplemento(faker.address().secondaryAddress());
+		request.setBairro(faker.address().lastName());
+		request.setCidade(faker.address().city());
+		request.setUf("ES");
+		request.setCep(faker.number().digits(5) + "-" + faker.number().digits(3));
+
+		var result = mockMvc.perform(put("/api/enderecos/" + id).contentType("application/json")
+				.content(objectMapper.writeValueAsString(request))).andExpect(status().isOk()).andReturn();
+
+		var content = result.getResponse().getContentAsString(StandardCharsets.UTF_8);
+
+		assertTrue(content.contains("Endereço atualizado com sucesso!"));
 	}
 
 }
